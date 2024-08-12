@@ -51,7 +51,7 @@ steps:
 
 availableSecrets:
   secretManager:
-  - versionName: projects/$PROJECT_NUMBER/secrets/GIT_ACCESS_TOKEN/versions/latest
+  - versionName: projects/$PROJECT_ID/secrets/GIT_ACCESS_TOKEN/versions/latest
     env: 'GIT_ACCESS_TOKEN'
 
 logsBucket: gs://final-project-bucket-logs
