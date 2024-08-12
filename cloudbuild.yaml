@@ -1,0 +1,57 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/pub-app:$SHORT_SHA', '.']
+  dir: './publisher-app'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/pub-app:$SHORT_SHA']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/sub-app:$SHORT_SHA', '.']
+  dir: './subscriber-app'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/sub-app:$SHORT_SHA']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/ui-app:$SHORT_SHA', '.']
+  dir: './react-app'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/ui-app:$SHORT_SHA']
+
+
+#### Update and Push Kubernetes Manifests ####
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: /bin/sh
+  secretEnv: ['GIT_ACCESS_TOKEN']
+  args:
+  - '-c'
+  - |
+    git clone https://mayank-majithia:$$GIT_ACCESS_TOKEN@github.com/mayank-majithia/final-project.git
+    cd final-project
+    git checkout main
+    
+    echo "Updating pub-app deployment with new image tag..."
+    sed -i "s#image: .*#image: gcr.io/$PROJECT_ID/pub-app:$SHORT_SHA#g" publisher-app/publisher-deployment.yaml
+    
+    echo "Updating sub-app deployment with new image tag..."
+    sed -i "s#image: .*#image: gcr.io/$PROJECT_ID/sub-app:$SHORT_SHA#g" subscriber-app/subscriber-deployment.yaml
+    
+    echo "Updating react-app deployment with new image tag..."
+    sed -i "s#image: .*#image: gcr.io/$PROJECT_ID/react-app:$SHORT_SHA#g" react-app/react-deployment.yaml
+
+    echo "Committing and pushing updated Kubernetes manifests..."
+    git config --global user.name "Mayank Majithia"
+    git config --global user.email "mayank.majithya@gmail.com"
+    git add publisher-app/publisher-deployment.yaml subscriber-app/subscriber-deployment.yaml react-app/react-deployment.yaml
+
+    git commit -m "[Cloud Builder] Updated pub-app, sub-app and react-app image tags to $SHORT_SHA"
+    git push https://mayank-majithia:$$GIT_ACCESS_TOKEN@github.com/mayank-majithia/final-project.git main
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/$PROJECT_NUMBER/secrets/GIT_ACCESS_TOKEN/versions/latest
+    env: 'GIT_ACCESS_TOKEN'
+
+logsBucket: gs://final-project-bucket-logs
