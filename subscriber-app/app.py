@@ -12,11 +12,8 @@ app = Flask(__name__)
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
-# Configure the GCP credentials
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./brave-monitor-432315-q6-4307296b097e.json"
-
 subscriber = pubsub_v1.SubscriberClient()
-subscription_path = subscriber.subscription_path("brave-monitor-432315", "save-notification-sub")
+subscription_path = subscriber.subscription_path(os.getenv('GCP_PROJECT_ID'), 'save-notification-sub')
 
 # Global list to store received messages (for demonstration purposes)
 received_messages = []

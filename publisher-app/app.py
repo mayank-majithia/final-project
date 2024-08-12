@@ -8,9 +8,6 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 CORS(app)
 
-# Configure the GCP credentials
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./brave-monitor-432315-q6-4307296b097e.json"
-
 # Initialize the Pub/Sub client
 publisher = pubsub_v1.PublisherClient()
 topic_path = publisher.topic_path(os.getenv('GCP_PROJECT_ID'), 'save-notification')
