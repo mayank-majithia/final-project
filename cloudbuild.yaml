@@ -30,7 +30,7 @@ steps:
   - |
     git clone https://mayank-majithia:$$GIT_ACCESS_TOKEN@github.com/mayank-majithia/final-project.git
     cd final-project
-    git checkout main
+    git checkout deploy
     
     echo "Updating pub-app deployment with new image tag..."
     sed -i "s#image: .*#image: gcr.io/$PROJECT_ID/pub-app:$SHORT_SHA#g" publisher-app/publisher-deployment.yaml
@@ -47,7 +47,7 @@ steps:
     git add publisher-app/publisher-deployment.yaml subscriber-app/subscriber-deployment.yaml react-app/react-deployment.yaml
 
     git commit -m "[Cloud Builder] Updated pub-app, sub-app and react-app image tags to $SHORT_SHA"
-    git push https://mayank-majithia:$$GIT_ACCESS_TOKEN@github.com/mayank-majithia/final-project.git main
+    git push https://mayank-majithia:$$GIT_ACCESS_TOKEN@github.com/mayank-majithia/final-project.git deploy
 
 availableSecrets:
   secretManager:
