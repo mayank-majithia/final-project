@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: sub-app
-        image: gcr.io/brave-monitor-432315-q6/sub-app:v2
+        image: gcr.io/brave-monitor-432315-q6/sub-app:e55e0fc
         ports:
         - containerPort: 5000
         env:

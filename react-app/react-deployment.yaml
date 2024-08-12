@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: ui-app
-        image: gcr.io/brave-monitor-432315-q6/ui-app:v1
+        image: gcr.io/brave-monitor-432315-q6/react-app:e55e0fc
         ports:
         - containerPort: 80
 ---
