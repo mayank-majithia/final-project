@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pub-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pub-app
+  template:
+    metadata:
+      labels:
+        app: pub-app
+    spec:
+      containers:
+      - name: pub-app
+        image: gcr.io/brave-monitor-432315-q6/pub-app:v2
+        ports:
+        - containerPort: 5000
+        env:
+        - name: GCP_PROJECT_ID
+          value: "brave-monitor-432315-q6"
+        - name: DB_HOST
+          value: "35.223.231.178"
+        - name: DB_NAME
+          value: "notificationdb"
+        - name: DB_USER
+          value: "root"
+        - name: DB_PASS
+          value: "root"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pub-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: pub-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
