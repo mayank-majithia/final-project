@@ -28,6 +28,16 @@ spec:
           value: "root"
         - name: DB_PASS
           value: "root"
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/brave-monitor-432315-q6-4307296b097e.json
+        volumeMounts:
+        - name: gcp-service-account
+          mountPath: /var/secrets/google
+          readOnly: true
+      volumes:
+      - name: gcp-service-account
+        secret:
+          secretName: gcp-service-account
 ---
 apiVersion: v1
 kind: Service
