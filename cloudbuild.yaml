@@ -38,15 +38,15 @@ steps:
     echo "Updating sub-app deployment with new image tag..."
     sed -i "s#image: .*#image: gcr.io/$PROJECT_ID/sub-app:$SHORT_SHA#g" subscriber-app/subscriber-deployment.yaml
     
-    echo "Updating react-app deployment with new image tag..."
-    sed -i "s#image: .*#image: gcr.io/$PROJECT_ID/react-app:$SHORT_SHA#g" react-app/react-deployment.yaml
+    echo "Updating ui-app deployment with new image tag..."
+    sed -i "s#image: .*#image: gcr.io/$PROJECT_ID/ui-app:$SHORT_SHA#g" react-app/react-deployment.yaml
 
     echo "Committing and pushing updated Kubernetes manifests..."
     git config --global user.name "Mayank Majithia"
     git config --global user.email "mayank.majithya@gmail.com"
     git add publisher-app/publisher-deployment.yaml subscriber-app/subscriber-deployment.yaml react-app/react-deployment.yaml
 
-    git commit -m "[Cloud Builder] Updated pub-app, sub-app and react-app image tags to $SHORT_SHA"
+    git commit -m "[Cloud Builder] Updated pub-app, sub-app and ui-app image tags to $SHORT_SHA"
     git push https://mayank-majithia:$$GIT_ACCESS_TOKEN@github.com/mayank-majithia/final-project.git deploy
 
 availableSecrets:
