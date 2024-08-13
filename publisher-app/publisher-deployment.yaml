@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: pub-app
-        image: gcr.io/brave-monitor-432315-q6/pub-app:e55e0fc
+        image: gcr.io/brave-monitor-432315-q6/pub-app:0b54f91
         ports:
         - containerPort: 5000
         env:
