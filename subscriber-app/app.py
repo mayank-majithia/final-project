@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask, jsonify
+from flask import Flask
 from google.cloud import pubsub_v1
 from flask_sqlalchemy import SQLAlchemy
 from concurrent.futures import TimeoutError
